@@ -146,6 +146,33 @@ class Manager{
             }
         }
     }
+
+    actualizar = async(idIngresado,user) =>{
+        if(!idIngresado){
+            return{
+                status:"error",
+                message:"Id is required"
+            }
+        }
+        if(fs.existsSync(pathToFile)){
+            let data = await fs.promises.readFile(pathToFile,"utf-8");
+            let users = JSON.parse(data);
+            let newUsers = users.filter((user) => user.id != idIngresado)
+            await fs.promises.writeFile(
+                pathToFile,
+                JSON.stringify(newUsers, null, 2)
+            )
+            user.id = parseInt(idIngresado);
+                users.push(user);
+                await fs.promises.writeFile(pathToFile,JSON.stringify(users, null, 2))
+                return{
+                    status:"Success",
+                    message:"User actualizado successfully"
+                }
+
+        }
+    }
+
 }
 
 export { Manager}

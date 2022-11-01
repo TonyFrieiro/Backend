@@ -12,9 +12,15 @@
     "id": 2
   },
   {
-    "tittle": "camara",
-    "price": "3100",
-    "thumbnail": "camara.png",
+    "tittle": "pantalla",
+    "price": "8000",
+    "thumbnail": "pantalla.png",
     "id": 3
+  },
+  {
+    "tittle": "notebook",
+    "price": "75000",
+    "thumbnail": "notebook.png",
+    "id": 4
   }
 ]
