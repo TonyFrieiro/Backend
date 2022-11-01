@@ -22,5 +22,11 @@
     "price": "75000",
     "thumbnail": "notebook.png",
     "id": 4
+  },
+  {
+    "tittle": "Lapicera",
+    "price": "200",
+    "thumbnail": "lapicera.png",
+    "id": 5
   }
 ]
