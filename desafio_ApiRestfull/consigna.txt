@@ -1,0 +1,4 @@
+Excelente, quedó muy bien el desafío!
+Veo que pudiste implementar todas las rutas para la API, veo bien la sintáxis y la lógica para get, put, delete. 
+El servidor de express correctamente instalado, al igual que el desafío anterior.
+Finalmente, también está configurado para el error cuando no se encontró el producto.
