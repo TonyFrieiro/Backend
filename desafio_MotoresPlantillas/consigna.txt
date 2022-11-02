@@ -1,0 +1,1 @@
+Utilizar un motor de plantillas para la interfaaz del cliente(vista)
