@@ -1,0 +1,19 @@
+.table{
+    margin-top: 40px;
+    text-align: center;
+    
+}
+.table tr{
+    padding: 5px;
+}
+.titulo{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.imgLista{
+    height: 50px;
+    width: 50px;
+}
+
+

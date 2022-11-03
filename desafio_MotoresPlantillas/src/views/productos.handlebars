@@ -1,12 +1,30 @@
-<h1>Hola {{nombre}}</h1>
+<h1 class="titulo" >VISTA DE PRODUCTOS</h1>
 
-<div><button id="navLista" >VAYA  INGRESAR UN PRODUCTO</button></div>
+<div><button id="navLista" class="btn btn-primary">VAYA  INGRESAR UN PRODUCTO</button></div>
 
-<ul>
-    {{#each productos}}
-        <li>{{this.tittle}}         ${{this.price}}      {{this.thumbnail}}</li>
-    {{/each}}
-</ul>
+
+<table class="table table-dark table-sm">
+  <thead >
+    <tr >
+      <th scope="col">Nombre</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Foto</th>
+    </tr>
+  </thead>
+  
+    <tbody class="table-group-divider" >
+        {{#each productos}}
+            <tr>
+            <td>{{this.tittle}}</td>
+            <td>${{this.price}}</td>
+            <td><img src={{this.thumbnail}} class="imgLista" alt="imagen del producto"></td>
+            </tr>
+        {{/each}}
+    </tbody>
+  
+</table>
+
+
 
 {{!-- {{#each scripts}}
   <script src="{{script}}"></script>

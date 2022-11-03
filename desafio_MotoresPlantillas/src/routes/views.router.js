@@ -4,6 +4,7 @@ import productos from "../files/productos.json" assert { type: "json" }
 import __dirname from "../utils.js";
 
 
+
 const router = Router();
 const productosService = new Manager()
 

@@ -28,5 +28,12 @@
     "price": "200",
     "thumbnail": "lapicera.png",
     "id": 5
+  },
+  {
+    "tittle": "Lapicera",
+    "price": "200",
+    "thumbnail": "https://res.cloudinary.com/dthbpblty/image/upload/v1667513058/NI_DC4013-001-1_c3wvaa.jpg",
+    "image": {},
+    "id": 6
   }
 ]

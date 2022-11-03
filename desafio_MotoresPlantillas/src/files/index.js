@@ -3,6 +3,9 @@
 const form = document.getElementById("productosForm")
 const button = document.getElementById("navForm")
 
+function clearInputs() {
+    document.getElementById("productosForm").reset();
+}
 
 form.addEventListener("submit",e=>{
     e.preventDefault()
@@ -16,6 +19,7 @@ form.addEventListener("submit",e=>{
             "Content-Type":"application/json"
         }
     }).then(result=>result.json()).then(json=>console.log(json))
+    clearInputs()
 })
 
 button.addEventListener("click",()=>{
