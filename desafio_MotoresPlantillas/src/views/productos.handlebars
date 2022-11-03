@@ -2,7 +2,9 @@
 
 <div><button id="navLista" class="btn btn-primary">VAYA  INGRESAR UN PRODUCTO</button></div>
 
-
+<script>
+  let contador = 0
+</script>
 <table class="table table-dark table-sm">
   <thead >
     <tr >
@@ -14,6 +16,9 @@
   
     <tbody class="table-group-divider" >
         {{#each productos}}
+            <script>
+              contador = contador + 1
+            </script>
             <tr>
             <td>{{this.tittle}}</td>
             <td>${{this.price}}</td>
@@ -24,6 +29,11 @@
   
 </table>
 
+<script>
+  if (contador == 0){
+    document.body.innerHTML +="<p class=noHay >NO HAY PRODUCTOS INGRESADOS</p><p class=noHay >Vaya a ingresar productos</p>"
+  }
+</script>
 
 
 {{!-- {{#each scripts}}
