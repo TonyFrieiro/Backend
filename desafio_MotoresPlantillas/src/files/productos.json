@@ -1,0 +1,27 @@
+[
+  {
+    "tittle": "Pantalon",
+    "price": "2400",
+    "thumbnail": "pantalon.png",
+    "id": 1
+  },
+  {
+    "tittle": "Remera",
+    "price": "1700",
+    "thumbnail": "remera.png",
+    "id": 2
+  },
+  {
+    "tittle": "Buzo",
+    "price": "4700",
+    "thumbnail": "buzo.png",
+    "id": 3
+  },
+  {
+    "tittle": "Lapicera",
+    "price": "200",
+    "thumbnail": "lapicera.png",
+    "image": {},
+    "id": 4
+  }
+]

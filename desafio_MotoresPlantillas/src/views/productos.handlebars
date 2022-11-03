@@ -1,0 +1,23 @@
+<h1>Hola {{nombre}}</h1>
+
+<div><button id="navLista" >VAYA  INGRESAR UN PRODUCTO</button></div>
+
+<ul>
+    {{#each productos}}
+        <li>{{this.tittle}}         ${{this.price}}      {{this.thumbnail}}</li>
+    {{/each}}
+</ul>
+
+{{!-- {{#each scripts}}
+  <script src="{{script}}"></script>
+{{/each}} --}}
+
+<script>
+    const button = document.getElementById("navLista")
+    button.addEventListener("click",()=>{
+        console.log("tocaste")
+        location.href='/'
+        
+        
+    })
+</script>

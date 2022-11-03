@@ -1,13 +1,14 @@
 import { Router } from "express";
-import {Manager} from "../manager.js"
-import productos from "../../productos.json" assert { type: "json" }
+import { Manager } from "../managers/productos.manager.js";
+import __dirname from "../utils.js";
+import productos from "../files/productos.json" assert { type: "json" }
 import {uploader} from "../utils.js"
 
-
+const router = Router();
 
 const manager = new Manager();
 
-const router = Router();
+
 
 router.get("/",async(req,res)=>{
     
@@ -71,3 +72,4 @@ router.delete("/:prodId", async(req,res)=>{
 })
 
 export default router
+
