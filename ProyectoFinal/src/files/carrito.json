@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "time": 1668794856106,
+    "productos": [
+      {
+        "id": 1,
+        "time": 1668794913009,
+        "nombre": "limon",
+        "descripcion": "la mejor toalla",
+        "codigo": 704,
+        "foto": "url",
+        "precio": 400,
+        "stock": 2
+      },
+      {
+        "id": 2,
+        "time": 1668794917516,
+        "nombre": "limon",
+        "descripcion": "la mejor toalla",
+        "codigo": 704,
+        "foto": "url",
+        "precio": 400,
+        "stock": 2
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "time": 1668794857624,
+    "productos": [
+      [
+        {
+          "id": 2,
+          "time": 1668794947787,
+          "nombre": "siu",
+          "descripcion": "la mejor toalla",
+          "codigo": 704,
+          "foto": "url",
+          "precio": 400,
+          "stock": 2
+        }
+      ]
+    ]
+  },
+  {
+    "id": 3,
+    "time": 1668794858618,
+    "productos": []
+  },
+  {
+    "id": 4,
+    "time": 1668794861835,
+    "productos": []
+  }
+]

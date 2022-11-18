@@ -1,0 +1,51 @@
+<h1 class="titulo" >VISTA DE PRODUCTOS</h1>
+
+<div><button id="navLista" class="btn btn-primary">VAYA  INGRESAR UN PRODUCTO</button></div>
+
+<script>
+  let contador = 0
+</script>
+<table class="table table-dark table-sm">
+  <thead >
+    <tr >
+      <th scope="col">Nombre</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Foto</th>
+    </tr>
+  </thead>
+  
+    <tbody class="table-group-divider" >
+        {{#each productos}}
+            <script>
+              contador = contador + 1
+            </script>
+            <tr>
+            <td>{{this.tittle}}</td>
+            <td>${{this.price}}</td>
+            <td><img src={{this.thumbnail}} class="imgLista" alt="imagen del producto"></td>
+            </tr>
+        {{/each}}
+    </tbody>
+  
+</table>
+
+<script>
+  if (contador == 0){
+    document.body.innerHTML +="<p class=noHay >NO HAY PRODUCTOS INGRESADOS</p><p class=noHay >Vaya a ingresar productos</p>"
+  }
+</script>
+
+
+{{!-- {{#each scripts}}
+  <script src="{{script}}"></script>
+{{/each}} --}}
+
+<script>
+    const button = document.getElementById("navLista")
+    button.addEventListener("click",()=>{
+        console.log("tocaste")
+        location.href='/'
+        
+        
+    })
+</script>
