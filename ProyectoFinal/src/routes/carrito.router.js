@@ -4,7 +4,7 @@ import __dirname from "../utils.js";
 
 import carritos from "../files/carrito.json" assert { type: "json" }
 
-
+let administrador = true
 
 const router = Router();
 
@@ -15,6 +15,7 @@ router.post("/",async(req,res)=>{
     await manager.save(nuevoCarrito).then((response)=>{
         console.log(response)})
     res.send({added:nuevoCarrito})
+
 })
 
 router.delete ("/:id", async(req,res)=>{

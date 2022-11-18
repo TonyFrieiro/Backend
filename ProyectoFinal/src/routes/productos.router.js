@@ -8,7 +8,7 @@ const router = Router();
 
 const manager = new Manager();
 
-
+let administrador = true
 
 router.get("/",async(req,res)=>{
     
@@ -42,33 +42,59 @@ router.get("/:prodId", async(req,res)=>{
 
 router.post("/",uploader.single("image"),async(req,res)=>{
     const nuevoProducto = req.body
-    await manager.save(nuevoProducto).then((response)=>{
-        console.log(response)})
-    res.send({added:nuevoProducto})
+    if (administrador == true){
+        await manager.save(nuevoProducto).then((response)=>{
+            console.log(response)})
+        res.send({added:nuevoProducto})
+    }else{
+        res.send({
+            status:"error",
+            message:"no tiene los permisos para realizar esta accion"
+        }
+        )
+    }
 })
 
 router.put("/:prodId", async(req,res)=>{
     const id = req.params.prodId
     const actualizacionProducto = req.body
 
-    let productoPut = productos.filter(p => p.id == id)
+    if (administrador == true){
+        let productoPut = productos.filter(p => p.id == id)
 
-    productoPut = actualizacionProducto
+        productoPut = actualizacionProducto
 
-    await manager.actualizar(id,actualizacionProducto)
+        await manager.actualizar(id,actualizacionProducto)
+    }else{
+        res.send({
+            status:"error",
+            message:"no tiene los permisos para realizar esta accion"
+        }
+        )
+    }
+
 
 })
 
 router.delete("/:prodId", async(req,res)=>{
     const id = req.params.prodId
 
-    await manager.deleteById(id).then((response)=>{
-        console.log(response)
-    })
-    res.send({
-        status:"succes",
-        message:"se elimino el producto"
-    })
+    if (administrador == true){
+        await manager.deleteById(id).then((response)=>{
+            console.log(response)
+        })
+        res.send({
+            status:"succes",
+            message:"se elimino el producto"
+        }) 
+    }else{
+        res.send({
+            status:"error",
+            message:"no tiene los permisos para realizar esta accion"
+        }
+        )
+    }
+
 })
 
 export default router
