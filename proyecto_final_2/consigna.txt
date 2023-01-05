@@ -1,1 +1,2 @@
-consigna proyecto final 2
+Basandose en los contenedores ya desarrollados(memoria (sql/nosql), archivos(manejo de archivos)) 
+desarrollar 2 contenedores mas que cumplan con la misma interfaz que permitan realizar las operaciones basicas de CRUD en mongoDB(ya sea local o remoto)

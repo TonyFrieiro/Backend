@@ -11,6 +11,21 @@ import database from "./knex/knex.js"
 
 import __dirname from "./utils.js";
 
+
+import { generateProduct } from "./faker.js";
+
+import mongoose from "mongoose"
+import mensajesModel from "./models/mensajes.js";
+
+
+const URL = "mongodb://127.0.0.1:27017/normalizr"
+
+const connection = mongoose.connect(URL,(error)=>{
+    if(error) console.log("hubo un error:"+error);
+    else console.log("conectado a monguito");
+})
+
+
 const app = express();
 
 //Motor de plantillas
@@ -73,6 +88,69 @@ app.delete("/delete/:id",async(req,res)=>{
     res.send("product deleted")
 })
 
+
+import {normalize, schema} from "normalizr"
+let mensajes = await mensajesModel.find()
+// console.log(mensajes)
+
+const post = {
+    id:"mensajes",
+    comments:[
+        {
+            id: 1,
+            author:{
+                id:1,
+                name:"Tony",
+                email:"tony@gmail.com",
+                edad:19,
+                img:"tony.png"
+            },
+            content:"hola como va"
+        },
+        {
+            id: 2,
+            author:{
+                id:2,
+                name:"Arim",
+                email:"Arim@gmail.com",
+                edad:19,
+                img:"arim.png"
+            },
+            content:mensajes[1].mensaje
+        },
+        {
+            id: 3,
+            author:{
+                id:1,
+                name:"Tony",
+                email:"tony@gmail.com",
+                edad:19,
+                img:"tony.png"
+            },
+            content:mensajes[2].mensaje
+        }
+    ]
+}
+
+const user = new schema.Entity("users")
+const comment = new schema.Entity("mensajes",{
+    author:user
+})
+
+// const postEntity = new schema.Entity("posts",{
+//     author:user,
+//     message:[comment]
+// })
+
+const normalizedData = normalize(post,comment)
+
+console.log(JSON.stringify(normalizedData,null,"\t"))
+
+console.log(`Longitud original: ${JSON.stringify(post).length}`)
+console.log(`Longitud normalized: ${JSON.stringify(normalizedData).length}`)
+
+
+
 io.on("connection",async socket=>{
 
     let result = await database("products").select("*")
@@ -87,13 +165,42 @@ io.on("connection",async socket=>{
     })
     socket.on("chat",async function(data){
         console.log(data)
+        let mensaje = data[0]
+        let nombre = data[1]
+        const newMensaje =  {nombre,mensaje}
+        let insertResult = await mensajesModel.create(newMensaje)
+        console.log(insertResult)
 
-        let result = await database("products").insert(product)
-        messages.push({socketId:data[1],message:data[0]})
+
+
+
+        // let result = await database("products").insert(data)
+        messages.push({nombre,mensaje})
         console.log(messages)
         io.emit("messageLog",messages)
     })
 })
+
+
+//desafio Faker
+
+
+
+
+
+
+
+app.get("/api/productos-test",async(req,res)=>{
+    let productos = []
+    for (let i = 0; i < 5; i++) {
+        productos.push(generateProduct());
+    }
+
+    res.render("faker",{
+        productos
+    })
+})
+
 
 
 

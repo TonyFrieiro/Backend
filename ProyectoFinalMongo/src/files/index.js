@@ -2,9 +2,6 @@ const socket = io()
 console.log(socket)
 
 
-import mensajesModel  from '../models/mensajes.js';
-
-
 const form = document.getElementById("productosForm")
 const button = document.getElementById("navForm")
 
@@ -50,7 +47,7 @@ socket.on("productos",function(data){
         return `<div>
                    <strong>${elem.tittle}</strong>:
                    <em>      $ ${elem.price}</em>
-                   <img src="${elem.img}" alt="productoImg">
+                   <img src="${elem.thumbnail}" alt="productoImg">
                    <style>
                    img { 
                     height: 50px;
@@ -85,23 +82,15 @@ input.addEventListener("keyup",evt=>{
 
 
 
-socket.on("messageLog",async function(data){
+socket.on("messageLog",function(data){
     console.log(data)
 
     let messages = "";
-
-    let mensajes = await mensajesModel.find()
-    console.log(mensajes)
-
-    const mens = document.getElementById("mensajes")
-    mens.innerHTML = mensajes
-
-    result.forEach(log => {
-        messages +=  `${log.nombre}  dice:  ${log.mensaje}  <br/>`
+    data.forEach(log => {
+        messages +=  `${log.socketId}  dice:  ${log.message}  <br/>`
     });
-    
-    let mensajes2 = await mensajesModel.find()
-    mens.innerHTML =  mensajes2
-    
+    const mens = document.getElementById("mensajes")
+    mens.innerHTML = messages
+
     socket.emit("message",console.log)
 })

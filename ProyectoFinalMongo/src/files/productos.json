@@ -1,0 +1,48 @@
+[
+  {
+    "tittle": "Pantalon",
+    "price": "2400",
+    "thumbnail": "https://res.cloudinary.com/dthbpblty/image/upload/v1667487107/img_3535-21-2c21aa729d1834266016432083156086-1024-1024_mevb5i.jpg",
+    "id": 1
+  },
+  {
+    "tittle": "Remera",
+    "price": "1700",
+    "thumbnail": "https://res.cloudinary.com/dthbpblty/image/upload/v1667487171/d88ae2138faf49be8f74aeca012c62eb_9366_qfhkz5.webp",
+    "id": 2
+  },
+  {
+    "tittle": "Buzo",
+    "price": "4700",
+    "thumbnail": "https://res.cloudinary.com/dthbpblty/image/upload/v1667486761/MW0MW20952_YBR_1_yrwnow.webp",
+    "id": 3
+  },
+  {
+    "tittle": "zapatillas",
+    "price": "34000",
+    "thumbnail": "https://res.cloudinary.com/dthbpblty/image/upload/v1667513058/NI_DC4013-001-1_c3wvaa.jpg",
+    "image": {},
+    "id": 4
+  },
+  {
+    "tittle": "TV",
+    "price": "70000",
+    "thumbnail": "https://res.cloudinary.com/dthbpblty/image/upload/v1667513146/download_kdfnos.jpg",
+    "image": {},
+    "id": 5
+  },
+  {
+    "tittle": "celular",
+    "price": "27000",
+    "thumbnail": "https://res.cloudinary.com/dthbpblty/image/upload/v1667513394/download_aadfbk.jpg",
+    "image": {},
+    "id": 6
+  },
+  {
+    "tittle": "Lapicera",
+    "price": "200",
+    "thumbnail": "https://res.cloudinary.com/dthbpblty/image/upload/v1667513394/download_aadfbk.jpg",
+    "image": {},
+    "id": 7
+  }
+]
