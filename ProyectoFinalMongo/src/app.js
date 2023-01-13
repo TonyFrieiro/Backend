@@ -1,58 +1,124 @@
 import  express  from "express";
-import handlebars from "express-handlebars"
-import {Server, Socket} from "socket.io"
-import productosRouter from "./routes/productos.router.js"
-import viewsRouter from "./routes/views.router.js"
-import productos from "./files/productos.json" assert { type: "json" }
-
-import __dirname from "./utils.js";
 
 const app = express();
 
-//Motor de plantillas
-
-
-//Registro
-app.engine("handlebars",handlebars.engine());
-//Conectar con carpeta vistas
-app.set("views",__dirname+"/views");
-//Activo el motor registrado
-app.set("view engine","handlebars");
-
-app.use(express.static(__dirname +"/files"))
-
-app.use(express.urlencoded({extended:true}))
-
-app.use(express.json());
-app.use("/",viewsRouter);
-app.use("/api/productos",productosRouter)
-
-
-const server = app.listen(8080,()=>console.log("Listening"));
-
-//WEBSOCKETS LISTA PRODUCTOS
-
-const io = new Server(server)
-
-const messages =[]
-
-let nombres = ""
-
-io.on("connection",socket=>{
-    socket.emit("productos", productos)
-
-    //Websockets CHAT
-    socket.on("nombre",function(data){
-        nombres = data
-        io.emit("messageLog",nombres)
-    })
-    socket.on("chat",function(data){
-        console.log(data)
-        messages.push({socketId:data[1],message:data[0]})
-        console.log(messages)
-        io.emit("messageLog",messages)
-    })
+const PORT = 8080
+const server = app.listen(PORT, () => {
+    console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
 })
+
+
+
+const { Router } = express
+
+import {
+    productosDao as apiProducts,
+    carritosDao as apiCars
+    
+} from './daos/index.js'
+
+
+const Admin = true
+
+function errorNoEsAdmin(ruta, metodo) {
+    const error = {
+        error: -1,
+    }
+    if (ruta && metodo) {
+        error.descripcion = `ruta '${ruta}' metodo '${metodo}' no autorizado`
+    } else {
+        error.descripcion = 'no autorizado'
+    }
+    return error
+}
+
+function permisoAdmin(req, res, next) {
+    if (!Admin) {
+        res.json(errorNoEsAdmin())
+    } else {
+        next()
+    }
+}
+//--------------------------------------------
+// configuro router de productos
+
+const productosRouter = new Router()
+
+productosRouter.get('/', async (req, res) => {
+    const productos = await apiProducts.listarAll()
+    res.json(productos)
+})
+
+productosRouter.get('/:id', async (req, res) => {
+    res.json(await apiProducts.listar(req.params.id))
+})
+
+productosRouter.post('/', permisoAdmin,  async (req, res) => {
+    console.log(req.body)
+    // timestamp = Date.now();
+    res.json({ id: await apiProducts.guardar(req.body)})
+})
+
+productosRouter.put('/:id', permisoAdmin, async (req, res) => {
+    res.json(await apiProducts.actualizar(req.body, req.params.id))
+})
+
+productosRouter.delete('/:id', permisoAdmin, async (req, res) => {
+    res.json(await apiProducts.borrar(req.params.id))
+})
+
+//--------------------------------------------
+// configuro router de carritos
+
+const carritosRouter = new Router()
+
+carritosRouter.get('/', async (req, res) => {
+    res.json((await apiCars.listarAll()).map(c => c.id))
+})
+
+carritosRouter.post('/', async (req, res) => {
+    timestamp = Date.now();
+    res.json({ id: await apiCars.guardar({ timestamp, productos: [] }) })
+})
+
+carritosRouter.delete('/:id', async (req, res) => {
+    res.json(await apiCars.borrar(req.params.id))
+})
+
+carritosRouter.get('/:id/productos', async (req, res) => {
+    const carrito = await apiCars.listar(req.params.id)
+    res.json(carrito.productos)
+})
+
+carritosRouter.post('/:id/productos', async (req, res) => {
+    const carrito = await apiCars.listar(req.params.id)
+    const producto = await apiProducts.listar(req.body.id)
+    carrito.productos.push(producto)
+    await apiCars.actualizar(carrito, req.params.id)
+    res.end()
+})
+
+carritosRouter.delete('/:id/productos/:idProd', async (req, res) => {
+    const carrito = await apiCars.listar(req.params.id)
+    const index = carrito.productos.findIndex(p => p.id == req.params.idProd)
+    if (index != -1) {
+        carrito.productos.splice(index, 1)
+        await apiCars.actualizar(carrito, req.params.id)
+    }
+    res.end()
+})
+
+
+//--------------------------------------------
+// configuro el servidor
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
+
+app.use('/api/productos', productosRouter)
+app.use('/api/carritos', carritosRouter)
+
 
 
 
