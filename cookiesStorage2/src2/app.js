@@ -6,6 +6,8 @@ import MongoStore from "connect-mongo"
 import __dirname from "./utils.js"
 import viewsRouter from "./routes/views.router.js"
 import sessionsRouter from "./routes/sessions.router.js"
+import passport from "passport"
+import initializePassport from "./config/passport.config.js"
 
 
 const app = express()
@@ -23,12 +25,17 @@ app.set("view engine","handlebars")
 app.use(session({
     store:MongoStore.create({
         mongoUrl: "mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/galeria?retryWrites=true&w=majority",
-        ttl:100
+        ttl:1000
     }),
     secret:"ajsdj4rt54t",
     saveUninitialized:false,
     resave:false
 }))
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
+
 
 const { Router } = express
 

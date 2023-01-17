@@ -29,6 +29,14 @@ router.get("/login",async(req,res)=>{
     })
 })
 
+router.get("/profile",(req,res)=>{
+    if(req.session.user){
+        res.render("profile",{user:req.session.user})
+    }else{
+        res.status(401).send({status:"error",error:"Not authenticated"})
+    }
+})
+
 router.get("/logout",(req,res)=>{
     req.session.destroy(err=>{
         if (err) return res.status(500).send("no pude cerrar sesion")
