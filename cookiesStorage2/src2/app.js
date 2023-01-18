@@ -8,10 +8,12 @@ import viewsRouter from "./routes/views.router.js"
 import sessionsRouter from "./routes/sessions.router.js"
 import passport from "passport"
 import initializePassport from "./config/passport.config.js"
+import configEnv from "./config/config.js"
+import {fork} from "child_process"
 
 
 const app = express()
-const connection = mongoose.connect("mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/galeria?retryWrites=true&w=majority")
+const connection = mongoose.connect(`mongodb+srv://${configEnv.mongo.USER}:${configEnv.mongo.PWD}@codercluster.kxaklqz.mongodb.net/${configEnv.mongo.DB}?retryWrites=true&w=majority`)
 
 
 import {allowInsecurePrototypeAccess} from '@handlebars/allow-prototype-access'
@@ -24,7 +26,7 @@ app.set("view engine","handlebars")
 
 app.use(session({
     store:MongoStore.create({
-        mongoUrl: "mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/galeria?retryWrites=true&w=majority",
+        mongoUrl: `mongodb+srv://${configEnv.mongo.USER}:${configEnv.mongo.PWD}@codercluster.kxaklqz.mongodb.net/${configEnv.mongo.DB}?retryWrites=true&w=majority`,
         ttl:1000
     }),
     secret:"ajsdj4rt54t",
@@ -48,7 +50,19 @@ app.use("/api/sessions",sessionsRouter)
 app.listen(8080, ()=> console.log("Listening.."))
 
 
-
+app.get("/info", (req,res)=>{
+     let datos = [
+        {argumentos_de_entrada:process.argv},
+        {sistema_operativo: process.platform},
+        {version_node: process.version},
+        {memoria_total_reservada: process.memoryUsage()},
+        {path_ejecuccion: process.cwd()},
+        {procces_id: process.pid},
+        {carpeta_proyecto: "?"}  
+    ]
+    console.log(datos)
+    res.send(datos)
+})
 
 
 
@@ -56,6 +70,7 @@ app.listen(8080, ()=> console.log("Listening.."))
 //////////////////////////////////////////////////////////////////////////////////
 
 import ContenedorMongoDb from "./manager/productos.manager.js"
+
 
 let manager = new ContenedorMongoDb()
 
@@ -125,6 +140,17 @@ productosRouter.delete('/:id', async (req, res) => {
 //     }
 //     res.end()
 // })
+
+
+app.get("/api/randoms",(req,res)=>{
+    const childProcess = fork("./src2/calculoPesado.js")
+    childProcess.send("ejecutate")
+    childProcess.on("message",val=>{
+        res.send(val)
+    })
+})
+
+
 
 
 app.use('/api/productos', productosRouter)
