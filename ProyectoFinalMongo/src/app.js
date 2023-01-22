@@ -1,6 +1,8 @@
 import  express  from "express";
+import {addLogger} from "./utils/logger.js"
 
 const app = express();
+app.use(addLogger)
 
 const PORT = 8080
 const server = app.listen(PORT, () => {
@@ -23,7 +25,7 @@ let managerP = new apiProducts
 let managerC = new apiCars
 
 
-const Admin = true
+const Admin = false
 
 function errorNoEsAdmin(ruta, metodo) {
     const error = {
@@ -40,6 +42,7 @@ function errorNoEsAdmin(ruta, metodo) {
 function permisoAdmin(req, res, next) {
     if (!Admin) {
         res.json(errorNoEsAdmin())
+        req.logger.error(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()} !!! No autorizado `)
     } else {
         next()
     }

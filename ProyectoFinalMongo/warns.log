@@ -1,0 +1,11 @@
+{"level":"error","message":"mi primer error"}
+{"level":"info","message":"GET en /api/productos/63cc44c4d4bbd8914aa00823 - 19:19:55"}
+{"level":"info","message":"GET en /api/productos - 19:19:59"}
+{"level":"info","message":""}
+{"level":"info","message":"GET en /api/productos - 19:24:56"}
+{"level":"info","message":""}
+{"level":"info","message":"GET en /api/productos - 19:25:14"}
+{"level":"info","message":""}
+{"level":"error","message":"error.descripcion"}
+{"level":"error","message":"[object Object]"}
+{"level":"error","message":"POST en / - 19:38:26 !!! No autorizado "}
