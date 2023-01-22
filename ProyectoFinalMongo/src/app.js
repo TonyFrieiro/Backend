@@ -8,7 +8,6 @@ const server = app.listen(PORT, () => {
 })
 
 
-
 const { Router } = express
 
 import {
@@ -16,6 +15,12 @@ import {
     carritosDao as apiCars
     
 } from './daos/index.js'
+
+// import apiProducts from "./daos/productos/productosDaoMongoDb.js"
+// import apiCars from "./daos/carritos/carritosDaoMongoDb.js"
+
+let managerP = new apiProducts
+let managerC = new apiCars
 
 
 const Admin = true
@@ -45,26 +50,30 @@ function permisoAdmin(req, res, next) {
 const productosRouter = new Router()
 
 productosRouter.get('/', async (req, res) => {
-    const productos = await apiProducts.listarAll()
+    const productos = await managerP.listarAll()
     res.json(productos)
 })
 
 productosRouter.get('/:id', async (req, res) => {
-    res.json(await apiProducts.listar(req.params.id))
+    res.json(await managerP.listar(req.params.id))
 })
 
 productosRouter.post('/', permisoAdmin,  async (req, res) => {
     console.log(req.body)
     // timestamp = Date.now();
-    res.json({ id: await apiProducts.guardar(req.body)})
+    res.json({ id: await managerP.guardar(req.body)})
 })
 
 productosRouter.put('/:id', permisoAdmin, async (req, res) => {
-    res.json(await apiProducts.actualizar(req.body, req.params.id))
+    res.json(await managerP.actualizar(req.body, req.params.id))
 })
 
 productosRouter.delete('/:id', permisoAdmin, async (req, res) => {
-    res.json(await apiProducts.borrar(req.params.id))
+    res.json(await managerP.borrar(req.params.id))
+})
+
+productosRouter.delete("/",async (req,res)=>{
+    res.json(await managerP.borrarAll())
 })
 
 //--------------------------------------------
@@ -73,39 +82,44 @@ productosRouter.delete('/:id', permisoAdmin, async (req, res) => {
 const carritosRouter = new Router()
 
 carritosRouter.get('/', async (req, res) => {
-    res.json((await apiCars.listarAll()).map(c => c.id))
+    const carritos = await managerC.listarAllCarritos()
+    res.json(carritos)
 })
 
 carritosRouter.post('/', async (req, res) => {
-    timestamp = Date.now();
-    res.json({ id: await apiCars.guardar({ timestamp, productos: [] }) })
+    let timestamp = Date.now();
+    res.json({ id: await managerC.guardarCarrito({ timestamp, productos : req.body }) })
 })
 
 carritosRouter.delete('/:id', async (req, res) => {
-    res.json(await apiCars.borrar(req.params.id))
+    res.json(await managerC.borrarCarrito(req.params.id))
 })
 
 carritosRouter.get('/:id/productos', async (req, res) => {
-    const carrito = await apiCars.listar(req.params.id)
-    res.json(carrito.productos)
+    const carrito = await managerC.listarCarrito(req.params.id)
+    res.json(carrito)
 })
 
-carritosRouter.post('/:id/productos', async (req, res) => {
-    const carrito = await apiCars.listar(req.params.id)
-    const producto = await apiProducts.listar(req.body.id)
-    carrito.productos.push(producto)
-    await apiCars.actualizar(carrito, req.params.id)
-    res.end()
-})
+// carritosRouter.post('/:id/productos', async (req, res) => {
+//     const carrito = await managerC.listarCarrito(req.params.id)
+//     // const producto = await managerP.listar(req.body.id)
+//     // carrito.productos.push(producto)
+//     await managerC.actualizarCarrito(carrito, req.params.id)
+//     // res.end()
+// })
 
-carritosRouter.delete('/:id/productos/:idProd', async (req, res) => {
-    const carrito = await apiCars.listar(req.params.id)
-    const index = carrito.productos.findIndex(p => p.id == req.params.idProd)
-    if (index != -1) {
-        carrito.productos.splice(index, 1)
-        await apiCars.actualizar(carrito, req.params.id)
-    }
-    res.end()
+// carritosRouter.delete('/:id/productos/:idProd', async (req, res) => {
+//     const carrito = await managerC.listar(req.params.id)
+//     const index = carrito.productos.findIndex(p => p.id == req.params.idProd)
+//     if (index != -1) {
+//         carrito.productos.splice(index, 1)
+//         await managerC.actualizar(carrito, req.params.id)
+//     }
+//     res.end()
+// })
+
+carritosRouter.delete("/",async (req,res)=>{
+    res.json(await managerC.borrarAllCarritos())
 })
 
 

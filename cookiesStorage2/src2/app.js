@@ -10,6 +10,7 @@ import passport from "passport"
 import initializePassport from "./config/passport.config.js"
 import configEnv from "./config/config.js"
 import {fork} from "child_process"
+// import {addLogger} from "./utils/logger.js"
 
 
 const app = express()
@@ -47,7 +48,9 @@ app.use(express.static(__dirname+"/public"))
 app.use("/",viewsRouter)
 app.use("/api/sessions",sessionsRouter)
 
-app.listen(8080, ()=> console.log("Listening.."))
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, ()=> console.log(`Listening on PORT ..${PORT}`))
 
 
 app.get("/info", (req,res)=>{
@@ -60,6 +63,7 @@ app.get("/info", (req,res)=>{
         {procces_id: process.pid},
         {carpeta_proyecto: "?"}  
     ]
+    // req.logger.info(datos)
     console.log(datos)
     res.send(datos)
 })
