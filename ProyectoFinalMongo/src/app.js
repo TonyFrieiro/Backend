@@ -31,7 +31,9 @@ app.use("/",viewsRouter)
 app.use("/api/sessions",sessionsRouter)
 
 
-const connection = mongoose.connect(config.mongo.URL)
+// const connection = mongoose.connect(config.mongo.URL)
+
+const connection = mongoose.connect(`mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/proyecto2?retryWrites=true&w=majority`)
 
 // `mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/proyecto2?retryWrites=true&w=majority`
 
