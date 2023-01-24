@@ -1,13 +1,42 @@
 import  express  from "express";
 import {addLogger} from "./utils/logger.js"
+import handlebars from "express-handlebars"
+import __dirname from "./utils.js"
+import viewsRouter from "./routes/views.router.js"
+import sessionsRouter from "./routes/sessions.router.js"
+import config from "./config/config.js"
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser"
 
 const app = express();
 app.use(addLogger)
 
-const PORT = 8080
+const PORT = process.env.PORT || 8080
 const server = app.listen(PORT, () => {
     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
 })
+
+
+/// poniendo handlebars como manejador de vistas
+
+app.engine("handlebars",handlebars.engine())
+app.set(`views`,`${__dirname}/views`)
+app.set("view engine","handlebars")
+
+app.use(express.static(__dirname+"/public"))
+app.use(express.json())
+app.use(cookieParser())
+
+app.use("/",viewsRouter)
+app.use("/api/sessions",sessionsRouter)
+
+
+const connection = mongoose.connect(config.mongo.URL)
+
+// `mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/proyecto2?retryWrites=true&w=majority`
+
+
+
 
 
 const { Router } = express

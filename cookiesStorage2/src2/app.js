@@ -64,7 +64,7 @@ app.get("/info", (req,res)=>{
         {carpeta_proyecto: "?"}  
     ]
     // req.logger.info(datos)
-    console.log(datos)
+    // console.log(datos)
     res.send(datos)
 })
 
@@ -147,11 +147,17 @@ productosRouter.delete('/:id', async (req, res) => {
 
 
 app.get("/api/randoms",(req,res)=>{
-    const childProcess = fork("./src2/calculoPesado.js")
+    const childProcess = ("./src2/calculoPesado.js")
     childProcess.send("ejecutate")
     childProcess.on("message",val=>{
         res.send(val)
     })
+    // let array = []
+    // for (let index = 0; index < 1000000; index++) {
+    //     let num = Math.floor((Math.random()*1000));
+    //     array.push(num)
+    // }
+    // res.json(array)
 })
 
 
