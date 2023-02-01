@@ -13,7 +13,10 @@ const schema = new mongoose.Schema({
     role:{
         type:String,
         default:"user"
-    }
+    },
+    direccion:{type:String, default:"?"},
+    edad:{type:Number, default:0},
+    telefono:{type:Number , default:0}
 })
 
 const userModel = mongoose.model(collection,schema)

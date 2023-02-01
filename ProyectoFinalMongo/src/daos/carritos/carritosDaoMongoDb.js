@@ -5,7 +5,9 @@ class CarritosDaoMongoDb extends ContenedorMongoDb {
 
     constructor() {
         super('carritos', {
-            productos: { type: Array, required: true }
+            productos: { type: Array, required: true },
+            user: {type: Object,  required: true },
+            timestamp: {type:Date}
         })
     }
 

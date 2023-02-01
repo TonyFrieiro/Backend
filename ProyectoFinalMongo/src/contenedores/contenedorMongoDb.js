@@ -41,11 +41,11 @@ class ContenedorMongoDb {
 
     async borrarAll() {
       await this.coleccion.deleteMany({})
-    
     }
 
     async guardarCarrito(document) {
       document.timestamp = Date.now()
+      // document.user = req.session.user
       // document.code = stringAleatorio(10)
       const documentSaveModel = new this.coleccion(document)
       const saveOne_ = await documentSaveModel.save()

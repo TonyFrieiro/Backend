@@ -8,6 +8,14 @@ import config from "./config/config.js"
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser"
 
+
+/////passport
+import session from "express-session"
+import MongoStore from "connect-mongo"
+import passport from "passport"
+import initializePassport from "./config/passport.config.js"
+////passport
+
 const app = express();
 app.use(addLogger)
 
@@ -15,6 +23,21 @@ const PORT = process.env.PORT || 8080
 const server = app.listen(PORT, () => {
     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
 })
+
+/////////////////////PASSPORT
+
+app.use(session({
+    store:MongoStore.create({
+        mongoUrl: `mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/proyecto2?retryWrites=true&w=majority`,
+        ttl:1000
+    }),
+    secret:"ajsdj4rt54t",
+    saveUninitialized:false,
+    resave:false,
+}))
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 /// poniendo handlebars como manejador de vistas
@@ -45,7 +68,8 @@ const { Router } = express
 
 import {
     productosDao as apiProducts,
-    carritosDao as apiCars
+    carritosDao as apiCars,
+    usersDaoMongoDb
     
 } from './daos/index.js'
 
@@ -56,7 +80,7 @@ let managerP = new apiProducts
 let managerC = new apiCars
 
 
-const Admin = false
+const Admin = true
 
 function errorNoEsAdmin(ruta, metodo) {
     const error = {
@@ -81,7 +105,17 @@ function permisoAdmin(req, res, next) {
 //--------------------------------------------
 // configuro router de productos
 
+
 const productosRouter = new Router()
+
+/////////////////////////////////////////////
+
+let productosLista =  await managerP.listarAll()
+let contenido2 =  JSON.stringify(productosLista)
+let contenido = JSON.parse(contenido2) 
+export {contenido}
+
+//////////////////////////////////////////////
 
 productosRouter.get('/', async (req, res) => {
     const productos = await managerP.listarAll()
@@ -93,8 +127,7 @@ productosRouter.get('/:id', async (req, res) => {
 })
 
 productosRouter.post('/', permisoAdmin,  async (req, res) => {
-    console.log(req.body)
-    // timestamp = Date.now();
+    req.logger.info(`${req.method} en ${req.url} - ${JSON.stringify(req.body)} se Guardo producto`)
     res.json({ id: await managerP.guardar(req.body)})
 })
 
@@ -103,10 +136,12 @@ productosRouter.put('/:id', permisoAdmin, async (req, res) => {
 })
 
 productosRouter.delete('/:id', permisoAdmin, async (req, res) => {
+    req.logger.warn(`${req.method} en ${req.url} - ${JSON.stringify(req.params)} se ELIMINO producto`)
     res.json(await managerP.borrar(req.params.id))
 })
 
 productosRouter.delete("/",async (req,res)=>{
+    req.logger.warn(`${req.method} en ${req.url} -  se ELIMINARON todos los productos`)
     res.json(await managerP.borrarAll())
 })
 
@@ -120,12 +155,18 @@ carritosRouter.get('/', async (req, res) => {
     res.json(carritos)
 })
 
+// import {obtenerUser} from "./public/js/userCarrito.js"
+
 carritosRouter.post('/', async (req, res) => {
-    let timestamp = Date.now();
-    res.json({ id: await managerC.guardarCarrito({ timestamp, productos : req.body }) })
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+    const time = hoy.toDateString()
+    req.logger.info(`${req.method} en ${req.url} - ${JSON.stringify(req.body)} se GUARDO el Carrito`)
+    res.json({ id: await managerC.guardarCarrito({ timestamp: time, productos : req.body, user:req.session.user}) })
 })
 
 carritosRouter.delete('/:id', async (req, res) => {
+    req.logger.warn(`${req.method} en ${req.url} - ${JSON.stringify(req.params)} se ELIMINO carrito`)
     res.json(await managerC.borrarCarrito(req.params.id))
 })
 
@@ -134,27 +175,52 @@ carritosRouter.get('/:id/productos', async (req, res) => {
     res.json(carrito)
 })
 
-// carritosRouter.post('/:id/productos', async (req, res) => {
-//     const carrito = await managerC.listarCarrito(req.params.id)
-//     // const producto = await managerP.listar(req.body.id)
-//     // carrito.productos.push(producto)
-//     await managerC.actualizarCarrito(carrito, req.params.id)
-//     // res.end()
-// })
-
-// carritosRouter.delete('/:id/productos/:idProd', async (req, res) => {
-//     const carrito = await managerC.listar(req.params.id)
-//     const index = carrito.productos.findIndex(p => p.id == req.params.idProd)
-//     if (index != -1) {
-//         carrito.productos.splice(index, 1)
-//         await managerC.actualizar(carrito, req.params.id)
-//     }
-//     res.end()
-// })
-
 carritosRouter.delete("/",async (req,res)=>{
+    req.logger.warn(`${req.method} en ${req.url} -  se ELIMINARON todos los carritos`)
     res.json(await managerC.borrarAllCarritos())
 })
+
+
+////////////////////////////////////////////      EMAIL
+
+import nodemailer from "nodemailer"
+
+const transport = nodemailer.createTransport({
+    service:"gmail",
+    port: 587,
+    auth: {
+        user: 'tonyfrieiro@gmail.com',
+        pass: 'pkedehmynomuvgoh'
+    }
+})
+
+app.post("/mail",async(req,res)=>{
+    const {firstName, lastName, direccion, edad, telefono, email} = req.body
+
+    const result = await transport.sendMail({
+        from:"yo",
+        to:"tonyfrieiro@gmail.com",
+        subject: `Nuevo registro de cuenta`,
+        html:`<div><h1>${(email)}${(firstName)}${(lastName)}${(telefono)}</h1></div>`,
+    })
+    req.logger.info(`${req.method} en ${req.url} - ${JSON.stringify(result)} se ENVIO el mail`)
+    res.send({status:"Succes",message:"Correo enviado!"})
+})
+app.post("/mailCompra",async(req,res)=>{
+    const {user, productos} = req.body
+    const result = await transport.sendMail({
+        from:"yo",
+        to:"tonyfrieiro@gmail.com",
+        subject: `Nuevo Pedido de ${user}`,
+        html:`<div><h1>${(productos)}</h1></div>`,
+    })
+    req.logger.info(`${req.method} en ${req.url} - ${JSON.stringify(result)} se ENVIO el mail`)
+    res.send({status:"Succes",message:"Correo enviado!"})
+})
+
+
+
+///////////////////////////////////////////
 
 
 //--------------------------------------------

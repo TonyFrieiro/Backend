@@ -9,3 +9,6 @@
 {"level":"error","message":"error.descripcion"}
 {"level":"error","message":"[object Object]"}
 {"level":"error","message":"POST en / - 19:38:26 !!! No autorizado "}
+{"level":"error","message":"POST en / - 12:32:36 !!! No autorizado "}
+{"level":"warn","message":"DELETE en /63da883c832d006c4c8d56f1 - {\"title\":\"camara\",\"price\":4000,\"thumbnail\":\"camara.png\"} se ELIMINO producto"}
+{"level":"warn","message":"DELETE en /63da87c5d1d64f553cce2efb - {\"id\":\"63da87c5d1d64f553cce2efb\"} se ELIMINO producto"}

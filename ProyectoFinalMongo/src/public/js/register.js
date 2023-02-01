@@ -1,5 +1,6 @@
 const form = document.getElementById("registerForm")
 
+const nav = document.getElementById("goLog")
 form.addEventListener("submit",evt=>{
     evt.preventDefault()
     const data = new FormData(form)
@@ -12,9 +13,24 @@ form.addEventListener("submit",evt=>{
             "Content-Type":"application/json"
         }
     }).then(result=>result.json()).then(json=>{
-        console.log(json)
+        let stringified = JSON.stringify(json)
+        
+
+        /////////////////////////////////////////////// hACER UN APP.GET DE USERS Y BUSCARLO POR EL ID
+
+        fetch("/mail",{
+            method:"POST",
+            body:JSON.stringify(obj),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
         if(json.status==="Succes"){
             window.location.replace("login")
         }
     })
+})
+
+nav.addEventListener("click",evt=>{
+    window.location.replace("login")
 })
