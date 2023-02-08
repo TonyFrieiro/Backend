@@ -1,11 +1,14 @@
 // import { getData } from "../public/js/productos.js"
-import { contenido } from "../app.js"
+// import { contenido } from "../app.js"
 
-// let contenido = [
-//     {tittle:"botella",price:2003,thumbnail:"botella.png"},
-//     {tittle:"camara",price:400,thumbnail:"camara.png"},
-//     {tittle:"celular",price:2003,thumbnail:"celular.png"}
-// ]
+
+let contenido = [
+    {title:"botella",price:2003,thumbnail:"botella.png"},
+    {title:"camara",price:400,thumbnail:"camara.png"},
+    {title:"celular",price:2003,thumbnail:"celular.png"},
+    {title:"camara",price:400,thumbnail:"camara.png"},
+    {title:"celular",price:2003,thumbnail:"celular.png"}
+]
 
 
 const register =  (req,res) =>{
@@ -28,7 +31,8 @@ const productos =  async  (req,res) =>{
         // redirect it to login page
         res.render("login")
     }else{
-    res.render("productos",{contenido})}
+    let productos = req.products
+    res.render("productos",{contenido,productos})}
 }
 
 const ingresoProductos = async (req,res)=>{

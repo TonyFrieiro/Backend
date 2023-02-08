@@ -14,11 +14,8 @@ form.addEventListener("submit",evt=>{
         }
     }).then(result=>result.json()).then(json=>{
         let stringified = JSON.stringify(json)
-        
 
-        /////////////////////////////////////////////// hACER UN APP.GET DE USERS Y BUSCARLO POR EL ID
-
-        fetch("/mail",{
+        fetch("/api/mails/register",{
             method:"POST",
             body:JSON.stringify(obj),
             headers:{

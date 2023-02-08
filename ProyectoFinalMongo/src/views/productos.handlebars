@@ -1,17 +1,59 @@
-<h1 class="titulo" >VISTA DE PRODUCTOS</h1>
+<h1 class="titulo" >VISTA DE PRODUCTOS{{user}}</h1>
 
 
 
 <div><button><a id="buttonDesloguearse">DESLOGUEATE</a></button></div>
 
 <div><button id="navLista" class="btn btn-primary">VAYA  INGRESAR UN PRODUCTO</button></div>
-<script>
+{{!-- <script>
   let botones = document.getElementsByClassName("botones")
   let funcionAgregar = (boton) =>{
     boton.addEventListener("click",evt=>{
       console.log(boton)
     })
   }
+</script> --}}
+
+
+<table class="table table-dark table-sm">
+  <thead >
+    <tr >
+      <th scope="col">Nombre</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Foto</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  
+    <tbody id="tabla" class="table-group-divider" >
+            
+    </tbody>
+  
+</table>
+
+
+
+<script>
+  let tabla = document.getElementById("tabla")
+  const contenido2 = fetch("/api/productos",{
+        method:"GET",
+        headers:{
+            "Content-Type":"application/json"
+        }
+    }).then(result=>result.json()).then(json=>{
+      console.log(json)
+      console.log(typeof(json))
+      json.forEach((el, index)=>{
+      contador = contador + 1
+      tabla.innerHTML += "<tr><td class=nombre>"+ JSON.stringify(el.title) +"</td><td class=price>"+ JSON.stringify(el.price) +"<td><img src="+JSON.stringify(el.thumbnail)+" class=imgLista alt=imagen del producto width=100 height=100></td><td><button id="+JSON.stringify(el._id)+ "class=botones >añadir al carrito</button></td></tr>";
+      });
+    })
+</script>
+
+
+
+<script>
+  let total = 0
 </script>
 <script>
   let contador = 0
@@ -79,9 +121,48 @@
         
     })
 </script> --}}
+<script>
+  botones = document.getElementsByClassName("botones")
+  console.log(botones)
+  let carritoPorFin = document.getElementById("carritoIngreso")
+  for (let i = 0; i < botones.length; i++) {            
+    botones[i].addEventListener('click',function(){
+      const produc = fetch(`/api/productos/${botones[i].id}`,{
+        method:"GET",
+        headers:{
+            "Content-Type":"application/json"
+        }
+    }).then(result=>result.json()).then(json=>{
+      let conten = JSON.stringify(json)
+      let messi = JSON.parse(conten)
+      total = total+ messi.price
+      console.log(messi.title)
+      let diego = JSON.stringify(conten.title)
+      carrito.push({messi.title},{messi.price})
+      console.log(carrito)}).then(
+      carritoIngreso.innerHTML = `
+        <h1>Su Carrito: </h1>
+        <p id="compraCarrito"> ${carrito}</p>
+        <p id="total"> ${total}</p>
+
+
+        <form id="carritoIngreso">
+        <label>toque para finalizar</label>
+        <input name="productos" type="hidden" value=${carrito}>
+        <input type="submit"  value="Terminar compra">
+        </form>
+
+
+
+      `
+      )
+    })
+  }
+</script>
 
 <script>
   botones = document.getElementsByClassName("botones")
+  console.log("segundo script"+botones)
   let carritoPorFin = document.getElementById("carritoIngreso")
   for (let i = 0; i < botones.length; i++) {            
     botones[i].addEventListener('click',function(){
@@ -93,7 +174,7 @@
 
 
         <form id="carritoIngreso">
-        <label>Productos</label>
+        <label>toque para finalizar</label>
         <input name="productos" type="hidden" value=${carrito}>
         <input type="submit"  value="Terminar compra">
         </form>
@@ -106,6 +187,9 @@
 </script>
 <script>
   let termino = document.getElementById("termino")
+  if (carrito == []){
+    termino.style.display = 'none'
+  }
   termino.addEventListener("click",evt=>{
     let carrito = []
     location.reload()

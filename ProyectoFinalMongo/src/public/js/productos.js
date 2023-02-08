@@ -16,7 +16,7 @@ carritoIngreso.addEventListener("submit",evt=>{
             "Content-Type":"application/json"
         }
     }).then(result=>result.json()).then(json=>{
-        fetch("/mailCompra",{
+        fetch("/api/mails/compra",{
             method:"POST",
             body:JSON.stringify(json),
             headers:{
@@ -27,6 +27,7 @@ carritoIngreso.addEventListener("submit",evt=>{
         //     window.location.replace("productos")
         // }
     })
+    // .then(location.reload())
 })
 
 nav.addEventListener("click",evt=>{
