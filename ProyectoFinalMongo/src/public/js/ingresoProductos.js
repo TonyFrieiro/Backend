@@ -17,7 +17,7 @@ form.addEventListener("submit",evt=>{
         if(json.status==="Succes"){
             window.location.replace("productos")
         }
-    })
+    }).then(alert("se ingreso el nuevo producto!"))
 })
 
 nav.addEventListener("click",evt=>{

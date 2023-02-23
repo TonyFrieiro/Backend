@@ -63,11 +63,11 @@ app.use('/api/carritos', carritosRouter)
 app.use("/api/mails" , mailsRouter)
 
 
-// const connection = mongoose.connect(config.mongo.URL)
+
 
 const connection = mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@codercluster.kxaklqz.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`)
 
-// `mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/proyecto2?retryWrites=true&w=majority`
+
 
 
 
