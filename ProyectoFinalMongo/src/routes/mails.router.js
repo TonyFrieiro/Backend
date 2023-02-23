@@ -35,7 +35,7 @@ mailsRouter.post("/compra",async(req,res)=>{
         from:"yo",
         to:"tonyfrieiro@gmail.com",
         subject: `Nuevo Pedido de ${name} (${email})`,
-        html:`<div><h1>${(productos)}</h1></div>`,
+        html:`<div><h1>${(JSON.stringify(req.body.productos))}</h1></div>`,
     })
     req.logger.info(`${req.method} en ${req.url} - ${JSON.stringify(result)} se ENVIO el mail`)
     res.send({status:"Succes",message:"Correo enviado!"})

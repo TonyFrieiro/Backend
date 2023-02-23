@@ -1,18 +1,21 @@
-<h1 class="titulo" >VISTA DE PRODUCTOS{{user}}</h1>
+<H3>USUARIO: {{userName}}rol:{{userRole}} </H3>
 
+<h1 class="titulo" >VISTA DE PRODUCTOS</h1>
+
+<script>
+  let total = 0
+</script>
+<script>
+  let contador = 0
+</script>
+<script>
+  let carrito = []
+</script>
 
 
 <div><button><a id="buttonDesloguearse">DESLOGUEATE</a></button></div>
 
 <div><button id="navLista" class="btn btn-primary">VAYA  INGRESAR UN PRODUCTO</button></div>
-{{!-- <script>
-  let botones = document.getElementsByClassName("botones")
-  let funcionAgregar = (boton) =>{
-    boton.addEventListener("click",evt=>{
-      console.log(boton)
-    })
-  }
-</script> --}}
 
 
 <table class="table table-dark table-sm">
@@ -30,6 +33,11 @@
     </tbody>
   
 </table>
+
+
+<div id="carrou">
+  
+</div>
 
 
 
@@ -52,45 +60,11 @@
 
 
 
-<script>
-  let total = 0
-</script>
-<script>
-  let contador = 0
-</script>
-<script>
-  let carrito = []
-</script>
-<table class="table table-dark table-sm">
-  <thead >
-    <tr >
-      <th scope="col">Nombre</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Foto</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  
-    <tbody class="table-group-divider" >
-        {{#each contenido}}
-            <script>
-              contador = contador + 1
-            </script>
-            <tr>
-            <td class="nombre">{{this.title}}</td>
-            <td class="precio">${{this.price}}</td>
-            <td><img src={{this.thumbnail}} class="imgLista" alt="imagen del producto" width="100" height="100"></td>
-            <td><button id={{this.title}} class="botones">añadir al carrito</button></td>
-            
-            </tr>
-        {{/each}}
-    </tbody>
-  
-</table>
 
 <form id="carritoIngreso">
         <label>Productos</label>
         <input name="productos" type="hidden" >
+        <input type="submit"  value="Terminar compra">
 </form>
 <button id="termino">vaciar carrito</button>
 
@@ -99,11 +73,7 @@
 </div>
 
 
-<script>
-  if (contador == 0){
-    document.body.innerHTML +="<p class=noHay >NO HAY PRODUCTOS INGRESADOS</p><p class=noHay >Vaya a ingresar productos</p>"
-  }
-</script>
+
 
 
 {{!-- {{#each scripts}}
@@ -112,79 +82,11 @@
 
 <script src="/js/productos.js"></script>
 
-{{!-- <script>
-    const button = document.getElementById("navLista")
-    button.addEventListener("click",()=>{
-        console.log("tocaste")
-        location.href='/'
-        
-        
-    })
-</script> --}}
-<script>
-  botones = document.getElementsByClassName("botones")
-  console.log(botones)
-  let carritoPorFin = document.getElementById("carritoIngreso")
-  for (let i = 0; i < botones.length; i++) {            
-    botones[i].addEventListener('click',function(){
-      const produc = fetch(`/api/productos/${botones[i].id}`,{
-        method:"GET",
-        headers:{
-            "Content-Type":"application/json"
-        }
-    }).then(result=>result.json()).then(json=>{
-      let conten = JSON.stringify(json)
-      let messi = JSON.parse(conten)
-      total = total+ messi.price
-      console.log(messi.title)
-      let diego = JSON.stringify(conten.title)
-      carrito.push({messi.title},{messi.price})
-      console.log(carrito)}).then(
-      carritoIngreso.innerHTML = `
-        <h1>Su Carrito: </h1>
-        <p id="compraCarrito"> ${carrito}</p>
-        <p id="total"> ${total}</p>
-
-
-        <form id="carritoIngreso">
-        <label>toque para finalizar</label>
-        <input name="productos" type="hidden" value=${carrito}>
-        <input type="submit"  value="Terminar compra">
-        </form>
 
 
 
-      `
-      )
-    })
-  }
-</script>
+<script defer src="/js/defer.js"></script>
 
-<script>
-  botones = document.getElementsByClassName("botones")
-  console.log("segundo script"+botones)
-  let carritoPorFin = document.getElementById("carritoIngreso")
-  for (let i = 0; i < botones.length; i++) {            
-    botones[i].addEventListener('click',function(){
-    carrito.push(botones[i].id)
-    console.log(carrito)
-    carritoIngreso.innerHTML = `
-        <h1>Su Carrito: </h1>
-        <p id="compraCarrito"> ${carrito}</p>
-
-
-        <form id="carritoIngreso">
-        <label>toque para finalizar</label>
-        <input name="productos" type="hidden" value=${carrito}>
-        <input type="submit"  value="Terminar compra">
-        </form>
-
-
-
-      `
-    })
-  } 
-</script>
 <script>
   let termino = document.getElementById("termino")
   if (carrito == []){

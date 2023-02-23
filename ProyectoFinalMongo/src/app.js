@@ -11,6 +11,9 @@ import config from "./config/config.js"
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser"
 
+import * as dotenv from 'dotenv' 
+dotenv.config()
+
 
 /////passport
 import session from "express-session"
@@ -31,7 +34,7 @@ const server = app.listen(PORT, () => {
 
 app.use(session({
     store:MongoStore.create({
-        mongoUrl: `mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/proyecto2?retryWrites=true&w=majority`,
+        mongoUrl: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@codercluster.kxaklqz.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`,
         ttl:1000
     }),
     secret:"ajsdj4rt54t",
@@ -62,7 +65,7 @@ app.use("/api/mails" , mailsRouter)
 
 // const connection = mongoose.connect(config.mongo.URL)
 
-const connection = mongoose.connect(`mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/proyecto2?retryWrites=true&w=majority`)
+const connection = mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@codercluster.kxaklqz.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`)
 
 // `mongodb+srv://tony:totito12@codercluster.kxaklqz.mongodb.net/proyecto2?retryWrites=true&w=majority`
 

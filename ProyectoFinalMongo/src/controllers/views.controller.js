@@ -32,7 +32,9 @@ const productos =  async  (req,res) =>{
         res.render("login")
     }else{
     let productos = req.products
-    res.render("productos",{contenido,productos})}
+    let userName = JSON.stringify(req.session.user.name)
+    let userRole = JSON.stringify(req.session.user.role)
+    res.render("productos",{contenido,productos,userName,userRole})}
 }
 
 const ingresoProductos = async (req,res)=>{

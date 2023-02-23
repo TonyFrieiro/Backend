@@ -18,7 +18,7 @@ carritoIngreso.addEventListener("submit",evt=>{
     }).then(result=>result.json()).then(json=>{
         fetch("/api/mails/compra",{
             method:"POST",
-            body:JSON.stringify(json),
+            body:JSON.stringify(obj),
             headers:{
                 "Content-Type":"application/json"
             }
@@ -26,7 +26,7 @@ carritoIngreso.addEventListener("submit",evt=>{
         // if(json.status==="Succes"){
         //     window.location.replace("productos")
         // }
-    })
+    }).then(alert("compra realizada!")).then(location.reload())
     // .then(location.reload())
 })
 
@@ -39,6 +39,9 @@ const buttonDesloguearse = document.getElementById("buttonDesloguearse")
 buttonDesloguearse.addEventListener("click",evt=>{
     window.location.replace("logout")
 })
+
+
+
 
 
 
